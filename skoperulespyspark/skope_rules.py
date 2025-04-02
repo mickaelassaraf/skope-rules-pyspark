@@ -8,7 +8,6 @@ from warnings import warn
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_X_y, check_array, check_is_fitted
 from sklearn.utils.multiclass import check_classification_targets
-from sklearn.utils import indices_to_mask
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import BaggingClassifier, BaggingRegressor
 from sklearn.tree import _tree
@@ -18,6 +17,12 @@ from .rule import Rule, replace_feature_name
 INTEGER_TYPES = (numbers.Integral, np.integer)
 BASE_FEATURE_NAME = "__C__"
 
+import numpy as np
+
+def indices_to_mask(indices, mask_length):
+    mask = np.zeros(mask_length, dtype=bool)
+    mask[indices] = True
+    return mask
 
 class SkopeRules(BaseEstimator):
     """An easy-interpretable classifier optimizing simple logical rules.
