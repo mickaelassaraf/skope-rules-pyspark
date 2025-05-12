@@ -1,57 +1,85 @@
 # Skope Rules PySpark
 
-Une implémentation PySpark de Skope Rules pour la classification binaire.
+Ce package fournit une implémentation de Skope Rules pour la classification binaire en utilisant PySpark. Il permet de générer des règles de décision à partir d'un ensemble de données d'entraînement.
 
 ## Installation
 
-```bash
+```sh
 pip install skope-rules-pyspark
 ```
 
 ## Utilisation
 
+### Exemple simple
+
 ```python
 from pyspark.sql import SparkSession
 from skope_rules_pyspark import SkopeRulesPySpark
 
-# Créer une session Spark
-spark = SparkSession.builder \
-    .appName("SkopeRulesPySparkExample") \
-    .master("local[2]") \
-    .getOrCreate()
+# Initialiser une session Spark
+spark = SparkSession.builder.appName("SkopeRulesExample").getOrCreate()
 
-# Créer un DataFrame d'exemple
-data = [
-    (1.0, 2.0, 3.0, 1),
-    (1.0, 2.0, 1.0, 1),
-    (4.0, 5.0, 6.0, 0),
-    (4.0, 2.0, 3.0, 0),
-    (1.0, 5.0, 3.0, 1),
-    (4.0, 5.0, 1.0, 0),
-]
-
-df = spark.createDataFrame(data, ["feature1", "feature2", "feature3", "label"])
+# Charger les données d'entraînement
+train_data = spark.read.csv("path/to/train_data.csv", header=True, inferSchema=True)
 
 # Initialiser et entraîner le modèle
-skope = SkopeRulesPySpark(
-    feature_names=["feature1", "feature2", "feature3"],
-    precision_min=0.5,
-    recall_min=0.1,
-    n_estimators=2,
-    max_depth=2
-)
+model = SkopeRulesPySpark()
+model.fit(train_data, target_col="target")
 
-skope.fit(df)
-
-# Obtenir les règles générées
-rules = skope.get_rules()
-for rule, (precision, recall, nb) in rules.items():
-    print(f"{rule} | precision={precision:.2f} | recall={recall:.2f} | nb={nb}")
-
-# Faire des prédictions
-predictions = skope.predict(df)
-predictions.show()
+# Générer les règles
+rules = model.generate_rules()
+print(rules)
 ```
+
+### Exemple complet
+
+```python
+from pyspark.sql import SparkSession
+from skope_rules_pyspark import SkopeRulesPySpark
+
+# Initialiser une session Spark
+spark = SparkSession.builder.appName("SkopeRulesExample").getOrCreate()
+
+# Charger les données d'entraînement
+train_data = spark.read.csv("path/to/train_data.csv", header=True, inferSchema=True)
+
+# Initialiser et entraîner le modèle
+model = SkopeRulesPySpark()
+model.fit(train_data, target_col="target")
+
+# Générer les règles
+rules = model.generate_rules()
+print(rules)
+
+# Prédire sur de nouvelles données
+test_data = spark.read.csv("path/to/test_data.csv", header=True, inferSchema=True)
+predictions = model.predict(test_data)
+print(predictions)
+```
+
+## Fonctionnalités
+
+- Génération de règles de décision pour la classification binaire
+- Utilisation de PySpark pour le traitement de données à grande échelle
+- Compatible avec les versions récentes de PySpark (>=3.0.0)
+
+## Dépendances
+
+- pyspark>=3.0.0
+- numpy>=1.21.6
+
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
+
+## Auteur
+
+Mickael Assaraf - mickael.assaraf@gmail.com
+
+## Liens
+
+- [GitHub](https://github.com/mickaelassaraf/skope-rules-pyspark)
+- [PyPI](https://pypi.org/project/skope-rules-pyspark/)
 
 ## Paramètres
 
@@ -81,8 +109,4 @@ predictions.show()
 3. Lancer les tests :
    ```bash
    pytest tests/
-   ```
-
-## Licence
-
-MIT 
+   ``` 
