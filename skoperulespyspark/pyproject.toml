@@ -5,10 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "skope-rules-pyspark"
 version = "0.1.0"
-description = "A PySpark implementation of Skope Rules for binary classification"
+description = "An implementation of Skope Rules for binary classification using PySpark"
 readme = "README.md"
 requires-python = ">=3.7"
-license = "MIT"
+license = { text = "MIT" }
 keywords = ["pyspark", "machine-learning", "rules", "classification"]
 authors = [
     { name = "Mickael Assaraf" }
