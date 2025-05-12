@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "skope-rules-pyspark"
-version = "0.1.0"
+version = "0.1.1"
 description = "An implementation of Skope Rules for binary classification using PySpark"
 readme = "README.md"
 requires-python = ">=3.7"
-license = { text = "MIT" }
+license = { file = "LICENSE" }
 keywords = ["pyspark", "machine-learning", "rules", "classification"]
 authors = [
-    { name = "Mickael Assaraf" }
+    { name = "Mickael Assaraf", email = "mickael.assaraf@gmail.com" },
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -30,7 +30,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/mickaelassaraf/skope-rules-pyspark"
-Repository = "https://github.com/mickaelassaraf/skope-rules-pyspark.git"
+Repository = "https://github.com/mickaelassaraf/skope-rules-pyspark"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/skope_rules_pyspark"] 
